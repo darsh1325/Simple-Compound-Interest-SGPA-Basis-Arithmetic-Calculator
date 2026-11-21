@@ -1,0 +1,232 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>B.Tech Sem 1 - Engineering Calculators</title>
+    <style>
+        body {
+            font-family: Arial, sans-serif;
+            background-color: #f4f4f9;
+            margin: 20px;
+            color: #333;
+        }
+        header {
+            text-align: center;
+            background-color: #004080;
+            color: white;
+            padding: 15px;
+            border-radius: 5px;
+        }
+        .container {
+            display: flex;
+            justify-content: space-around;
+            flex-wrap: wrap;
+            margin-top: 20px;
+        }
+        .box {
+            background-color: white;
+            padding: 20px;
+            border: 1px solid #ccc;
+            border-radius: 8px;
+            width: 310px;
+            margin-bottom: 20px;
+            box-shadow: 2px 2px 10px rgba(0,0,0,0.1);
+        }
+        h2 {
+            color: #004080;
+            border-bottom: 2px solid #004080;
+            padding-bottom: 5px;
+            font-size: 18px;
+        }
+        label {
+            display: block;
+            margin-top: 10px;
+            font-weight: bold;
+            font-size: 14px;
+        }
+        input {
+            width: 93%;
+            padding: 8px;
+            margin-top: 5px;
+            border: 1px solid #aaa;
+            border-radius: 4px;
+        }
+        .sgpa-row {
+            display: flex;
+            gap: 10px;
+            margin-top: 5px;
+        }
+        button {
+            margin-top: 15px;
+            padding: 10px 15px;
+            background-color: #004080;
+            color: white;
+            border: none;
+            border-radius: 4px;
+            cursor: pointer;
+            font-size: 14px;
+        }
+        button:hover {
+            background-color: #002b55;
+        }
+        .result {
+            margin-top: 15px;
+            font-weight: bold;
+            color: #006600;
+            font-size: 14px;
+        }
+    </style>
+</head>
+<body>
+
+    <header>
+        <h1>Engineering Graphics Lab Practical</h1>
+        <p>Submitted by: DARSH KATARIA | Roll No: 29077 | B.Tech CSE Sem 1</p>
+    </header>
+
+    <div class="container">
+        
+        <!-- 1. Simple & Compound Interest Calculator -->
+        <div class="box">
+            <h2>1. Interest Calculator</h2>
+            
+            <label for="principal">Principal Amount (₹):</label>
+            <input type="number" id="principal" placeholder="e.g., 10000">
+
+            <label for="rate">Rate of Interest (% per year):</label>
+            <input type="number" id="rate" placeholder="e.g., 5">
+
+            <label for="time">Time (in years):</label>
+            <input type="number" id="time" placeholder="e.g., 2">
+
+            <button onclick="calculateInterest()">Calculate SI & CI</button>
+
+            <div class="result" id="interest-result"></div>
+        </div>
+
+        <!-- 2. B.Tech SGPA Calculator -->
+        <div class="box">
+            <h2>2. B.Tech SGPA Calculator</h2>
+            <p style="font-size: 12px; color: #666;">Enter Credits & Grade Points (out of 10)</p>
+            
+            <label>Subject 1 (Maths):</label>
+            <div class="sgpa-row">
+                <input type="number" id="c1" placeholder="Credits (e.g. 4)">
+                <input type="number" id="g1" placeholder="Grade Pt (e.g. 9)">
+            </div>
+
+            <label>Subject 2 (Physics/Chem):</label>
+            <div class="sgpa-row">
+                <input type="number" id="c2" placeholder="Credits">
+                <input type="number" id="g2" placeholder="Grade Pt">
+            </div>
+
+            <label>Subject 3 (Programming/Lab):</label>
+            <div class="sgpa-row">
+                <input type="number" id="c3" placeholder="Credits">
+                <input type="number" id="g3" placeholder="Grade Pt">
+            </div>
+
+            <button onclick="calculateSGPA()">Calculate SGPA</button>
+
+            <div class="result" id="sgpa-result"></div>
+        </div>
+
+        <!-- 3. Basic Arithmetic Calculator -->
+        <div class="box">
+            <h2>3. Basic Calculator</h2>
+            
+            <label for="num1">First Number:</label>
+            <input type="number" id="num1" placeholder="Enter first number">
+
+            <label for="num2">Second Number:</label>
+            <input type="number" id="num2" placeholder="Enter second number">
+
+            <button onclick="calculateMath('+')">+</button>
+            <button onclick="calculateMath('-')">-</button>
+            <button onclick="calculateMath('*')">×</button>
+            <button onclick="calculateMath('/')">÷</button>
+
+            <div class="result" id="math-result"></div>
+        </div>
+
+    </div>
+
+    <script>
+        // 1. Simple & Compound Interest Logic
+        function calculateInterest() {
+            let p = parseFloat(document.getElementById("principal").value);
+            let r = parseFloat(document.getElementById("rate").value);
+            let t = parseFloat(document.getElementById("time").value);
+
+            if (isNaN(p) || isNaN(r) || isNaN(t)) {
+                document.getElementById("interest-result").innerText = "Please enter valid numbers.";
+                return;
+            }
+
+            // Simple Interest Formula: (P * R * T) / 100
+            let si = (p * r * t) / 100;
+
+            // Compound Interest Formula: P * (1 + R/100)^T - P
+            let totalCI = p * Math.pow((1 + r / 100), t);
+            let ci = totalCI - p;
+
+            document.getElementById("interest-result").innerHTML = 
+                "Simple Interest: ₹" + si.toFixed(2) + "<br>" +
+                "Compound Interest: ₹" + ci.toFixed(2);
+        }
+
+        // 2. SGPA Logic: Sum(Credits * Grade Points) / Sum(Credits)
+        function calculateSGPA() {
+            let c1 = parseFloat(document.getElementById("c1").value) || 0;
+            let g1 = parseFloat(document.getElementById("g1").value) || 0;
+            let c2 = parseFloat(document.getElementById("c2").value) || 0;
+            let g2 = parseFloat(document.getElementById("g2").value) || 0;
+            let c3 = parseFloat(document.getElementById("c3").value) || 0;
+            let g3 = parseFloat(document.getElementById("g3").value) || 0;
+
+            let totalCredits = c1 + c2 + c3;
+            let totalPoints = (c1 * g1) + (c2 * g2) + (c3 * g3);
+
+            if (totalCredits === 0) {
+                document.getElementById("sgpa-result").innerText = "Please enter valid credits.";
+                return;
+            }
+
+            let sgpa = totalPoints / totalCredits;
+            let percentage = (sgpa - 0.75) * 10; // Standard conversion formula
+
+            document.getElementById("sgpa-result").innerHTML = 
+                "Your SGPA: " + sgpa.toFixed(2) + "<br>" +
+                "Approx Percentage: " + percentage.toFixed(2) + "%";
+        }
+
+        // 3. Basic Calculator Logic
+        function calculateMath(operator) {
+            let n1 = parseFloat(document.getElementById("num1").value);
+            let n2 = parseFloat(document.getElementById("num2").value);
+            let ans = 0;
+
+            if (isNaN(n1) || isNaN(n2)) {
+                document.getElementById("math-result").innerText = "Please enter both numbers.";
+                return;
+            }
+
+            if (operator === '+') ans = n1 + n2;
+            else if (operator === '-') ans = n1 - n2;
+            else if (operator === '*') ans = n1 * n2;
+            else if (operator === '/') {
+                if (n2 === 0) {
+                    document.getElementById("math-result").innerText = "Cannot divide by zero.";
+                    return;
+                }
+                ans = n1 / n2;
+            }
+
+            document.getElementById("math-result").innerText = "Result: " + ans;
+        }
+    </script>
+
+</body>
+</html>
